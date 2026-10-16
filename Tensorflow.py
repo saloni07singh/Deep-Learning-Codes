@@ -10,5 +10,3 @@ print("Vector:",b)
 print("Matrix:",c)
 print("String:",d)
 print("Float:",e)
-
-print("Hello GitHub!")

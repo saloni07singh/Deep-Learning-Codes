@@ -7,7 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
 
 
-df = pd.read_csv("/content/Dry_Bean_Dataset.csv")
+df = pd.read_csv("Dry_Bean_Dataset.csv")
 df.head()
 df['Class'].value_counts()
 

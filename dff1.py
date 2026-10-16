@@ -6,7 +6,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
 
-df = pd.read_csv("/content/train.csv")
+df = pd.read_csv("train.csv")
 df.head()
 
 

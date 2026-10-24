@@ -11,8 +11,8 @@ df = pd.read_csv("customer_data.csv")
 print("Original Customer Data")
 print(df.head())
 
-# Select the six numeric features
-X = df[
+# Select the six required numeric columns
+df = df[
     [
         "Annual_Income",
         "Spending_Score",
@@ -21,7 +21,14 @@ X = df[
         "Purchase_Frequency",
         "Total_Spend"
     ]
-].values
+]
+
+# Convert columns to numeric and remove missing values
+df = df.apply(pd.to_numeric, errors="coerce")
+df = df.replace([np.inf, -np.inf], np.nan)
+df = df.dropna()
+
+X = df.values
 
 # Standardize the data
 scaler = StandardScaler()
@@ -34,12 +41,12 @@ print(X_scaled)
 input_layer = Input(shape=(6,))
 
 encoded = Dense(3, activation="relu")(input_layer)
-encoded = Dense(2, activation="relu")(encoded)
+encoded = Dense(2, activation="linear")(encoded)
 
 decoded = Dense(3, activation="relu")(encoded)
 decoded = Dense(6, activation="linear")(decoded)
 
-# Define the autoencoder
+# Define and compile the autoencoder
 autoencoder = Model(input_layer, decoded)
 
 autoencoder.compile(
@@ -48,7 +55,7 @@ autoencoder.compile(
 )
 
 # Train the autoencoder
-autoencoder.fit(
+history = autoencoder.fit(
     X_scaled,
     X_scaled,
     epochs=100,
@@ -65,5 +72,7 @@ encoded_data = encoder.predict(X_scaled)
 print("\nEncoded Features:")
 print(encoded_data)
 
-print("Original Number of Features:", X_scaled.shape[1])
+print("\nOriginal Number of Features:", X_scaled.shape[1])
 print("Reduced Number of Features:", encoded_data.shape[1])
+print("Number of Customer Records:", encoded_data.shape[0])
+print("Final Training Loss:", history.history["loss"][-1])
